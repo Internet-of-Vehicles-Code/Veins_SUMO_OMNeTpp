@@ -10,7 +10,6 @@
   - [2.3. 参考链接](#23-参考链接)
 - [3. OMNeT++相关操作](#3-omnet相关操作)
   - [3.1. 示例代码介绍](#31-示例代码介绍)
-    - [3.1.1 Veins示例代码中各文件定义](#311-veins示例代码中各文件定义)
   - [3.2. 常用功能代码编写](#32-常用功能代码编写)
     - [3.2.1. 发送与接收 WSM 消息](#321-发送与接收-wsm-消息)
     - [3.2.2. 设置多个RSU](#322-设置多个rsu)
@@ -176,20 +175,34 @@ SUMO中路网文件的编写可以手动编写，也可以用`netconvert`命令�
   复制路网文件（map.net.xml）、车辆行为文件（map.rou.xml）、地形文件（map.poly.xml）、配置文件（map.sumo.cfg）到OMNeT++示例项目的`Veins -> examples -> veins`路径下，同时修改`erlangen.launchd.xml`和`erlangen.sumo.cfg`中的相应内容，如下:
 
   ![](./image/Veins/image30.jpg)
+
   ![](./image/Veins/image31.jpg)  
   
   
   或者重新生成`map.launchd.xml`和`map.sumo.cfg`文件，并在`omnetpp.ini`文件中修改相应内容，如下：
   ![](./image/Veins/image32.jpg) 
-  
+
   运行`omnetpp.ini`文件，并根据需求在`.ini`配置文件下更改相应内容。 
   
   ![](./image/Veins/image9.png)
 
-  例如：运行后如遇到下述情况，则需要在`omnetpp.ini`文件中修改运行方框尺寸
+  如果刚运行就出现如下错误：
+  
+  ![](./image/Veins/image37.png)
+  
+  说明无法成功连接到 TraCI（Traffic Control Interface）服务器，TraCI 服务器是 SUMO 交通模拟器的一部分。这时只需要点击 `Activities->veins_launchd` 打开，出现如下界面即可再次运行 `omnetpp.ini`。
+  
+  ![](./image/Veins/image38.png) 
+
+  ![](./image/Veins/image39.png)
+
+
+  运行后如遇到下述情况，则需要在 `omnetpp.ini` 文件中修改仿真区域范围大小：
+
   ![](./image/Veins/image33.jpg)
 
   ![](./image/Veins/image34.jpg) 
+  
 
 #### 2.1.2. 直接用netedit软件绘制地图
 
@@ -248,7 +261,8 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 ![](./image/Veins/image12.jpg)
 
 ### 3.1. 示例代码介绍
-#### 3.1.1 Veins示例代码中各文件定义
+
+该部分对 Veins 示例代码中各文件功能或定义进行了简单介绍。
 
 - veins->examples->veins下各文件
   - results文件夹
@@ -775,6 +789,8 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
 
 ![](./image/Veins/image22.png)
 
+参考链接：[https://www.coder.work/article/6774522](https://www.coder.work/article/6774522)
+
 #### 3.2.5. 新建一种ReportMessage消息类型
 - 首先需自定义一个 ReportMessage，可以在 `veins/src/veins/modules/messages` 路径下新建一个 `ReportMessage.msg` 文件，代码内容如下：
   
@@ -843,16 +859,19 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
   }
   ```
 
-- 参考链接
+- 参考链接 👍👍👍
   - [https://blog.zifan.wang/zh/categories/Veins/](https://blog.zifan.wang/zh/categories/Veins/)
   - [https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg](https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg)
 
 
 ### 3.3. OMNeT++中链接OpenSSL库
 
-- 在linux中安装OpenSSL库
-  参考链接：CSDN博客·Linux环境下安装OpenSSL（源码方式安装）：[[link]](https://blog.csdn.net/weixin_39274753/article/details/107958283)
-- 在OMNeT++中链接外部库：`-lssl`和`-lcrypto`，具体操作如下图所示
+OpenSSL 是一个开源的安全套接字层密码库，可以在许多操作系统，包括Linux，Mac OS和Windows等上使用，包含了丰富的应用于网络安全的工具。这些工具可以用于创建SSL证书，生成和管理 RSA 密钥对，加密和解密数据，计算哈希值，建立网络连接等等。它被广泛应用于网络安全和加密领域。若仿真时需要进行一些密码学相关操作，可以在 OMNeT++ 中链接OpenSSL 库。
+
+- 在 linux 中安装 OpenSSL 库
+  参考链接：CSDN 博客 · Linux环境下安装OpenSSL（源码方式安装）：[[link]](https://blog.csdn.net/weixin_39274753/article/details/107958283)
+
+- OpenSSL 中包含了 ssl、crypto 等库，在 OMNeT++ 中使用 OpenSSL 通常需要链接外部库：`-lssl` 和 `-lcrypto`，具体操作如下所示：
  
   ![](./image/Veins/image13.png)
 
@@ -860,15 +879,24 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
 
   ![](./image/Veins/image15.png)
 
+  参考链接：博客园 · Ubuntu 20.04 安装 OpenSSL C 开发环境：[[link]](https://www.cnblogs.com/Yogile/p/12914741.html)
+
+- OpenSSL 学习链接
+  - OpenSSL 官网：[https://www.openssl.org/](https://www.openssl.org/)
+  - OpenSSL 中文文档：[https://www.open-ssl.cn/](https://www.open-ssl.cn/) 👍👍👍
 
 ## 4. 平台中可能遇到的问题
 
 ### 4.1. Ubuntu磁盘扩容
 
-- CSDN博客·Ubuntu磁盘扩容：[link](https://blog.csdn.net/qq_45853229/article/details/124595300?ydreferer=aHR0cHM6Ly9jbi5iaW5nLmNvbS8=)
+- CSDN 博客 · Ubuntu磁盘扩容：[link](https://blog.csdn.net/qq_45853229/article/details/124595300?ydreferer=aHR0cHM6Ly9jbi5iaW5nLmNvbS8=)
+
+- CSDN 博客 · 设置root密码：[[link]](https://blog.csdn.net/stone_fall/article/details/108229115)
 
 ### 4.2. 安装中文输入法
 
-- 知乎·Debian10 更换软件源 & 配置中文环境 & 安装中文输入法：[[link]](https://zhuanlan.zhihu.com/p/106775707)
-- CSDN博客·Linux下安装中文输入法：[[link]](https://blog.csdn.net/yanhanhui1/article/details/115128309)
-- CSDN博客·Ubuntu 20.04安装搜狗输入法[[link]](https://blog.csdn.net/code_change_era/article/details/113834432)
+- 知乎 · Debian10 更换软件源 & 配置中文环境 & 安装中文输入法：[[link]](https://zhuanlan.zhihu.com/p/106775707)
+- CSDN 博客 · Linux下安装中文输入法：[[link]](https://blog.csdn.net/yanhanhui1/article/details/115128309)
+- CSDN 博客 · Ubuntu 20.04安装搜狗输入法：[[link]](https://blog.csdn.net/code_change_era/article/details/113834432)
+
+  ![](./image/Veins/image36.png)  
