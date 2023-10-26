@@ -1,30 +1,35 @@
-- [Veins \& SUMO \& OMNeT++ 车联网仿真平台简介](#veins--sumo--omnet-车联网仿真平台简介)
-  - [Veins](#veins)
-  - [SUMO](#sumo)
-  - [OMNeT++](#omnet)
-- [SUMO相关操作](#sumo相关操作)
-  - [SUMO地图替换](#sumo地图替换)
-    - [1. 使用netconvert转换工具](#1-使用netconvert转换工具)
-    - [2. 手动编写](#2-手动编写)
-  - [TraCI接口](#traci接口)
-  - [参考链接](#参考链接)
-- [OMNeT++相关操作](#omnet相关操作)
-  - [示例代码介绍](#示例代码介绍)
-    - [Veins示例代码中各文件定义](#veins示例代码中各文件定义)
-  - [常用功能代码编写](#常用功能代码编写)
-  - [OMNeT++中链接OpenSSL库](#omnet中链接openssl库)
-- [平台中可能遇到的问题](#平台中可能遇到的问题)
-  - [Ubuntu磁盘扩容](#ubuntu磁盘扩容)
-  - [安装中文输入法](#安装中文输入法)
+- [1. Veins \& SUMO \& OMNeT++ 车联网仿真平台简介](#1-veins--sumo--omnet-车联网仿真平台简介)
+  - [1.1. Veins](#11-veins)
+  - [1.2. SUMO](#12-sumo)
+  - [1.3. OMNeT++](#13-omnet)
+- [2. SUMO相关操作](#2-sumo相关操作)
+  - [2.1. SUMO地图替换](#21-sumo地图替换)
+    - [2.1.1. 使用netconvert转换工具](#211-使用netconvert转换工具)
+    - [2.1.2. 直接用netedit软件绘制地图](#212-直接用netedit软件绘制地图)
+  - [2.2. TraCI接口](#22-traci接口)
+  - [2.3. 参考链接](#23-参考链接)
+- [3. OMNeT++相关操作](#3-omnet相关操作)
+  - [3.1. 示例代码介绍](#31-示例代码介绍)
+    - [3.1.1 Veins示例代码中各文件定义](#311-veins示例代码中各文件定义)
+  - [3.2. 常用功能代码编写](#32-常用功能代码编写)
+    - [3.2.1. 发送与接收 WSM 消息](#321-发送与接收-wsm-消息)
+    - [3.2.2. 设置多个RSU](#322-设置多个rsu)
+    - [3.2.3. 获取节点位置和速度](#323-获取节点位置和速度)
+    - [3.2.4. 获取消息的接收功率](#324-获取消息的接收功率)
+    - [3.2.5. 新建一种ReportMessage消息类型](#325-新建一种reportmessage消息类型)
+  - [3.3. OMNeT++中链接OpenSSL库](#33-omnet中链接openssl库)
+- [4. 平台中可能遇到的问题](#4-平台中可能遇到的问题)
+  - [4.1. Ubuntu磁盘扩容](#41-ubuntu磁盘扩容)
+  - [4.2. 安装中文输入法](#42-安装中文输入法)
 
 
 
 
-## Veins & SUMO & OMNeT++ 车联网仿真平台简介
+## 1. Veins & SUMO & OMNeT++ 车联网仿真平台简介
 
 ![](./image/Veins/image1.png)
 
-### Veins
+### 1.1. Veins
 
 ![](./image/Veins/image2_veins.gif)
 
@@ -37,7 +42,7 @@ Veins（Vehicles in Network Simulation）是一个用于运行车辆网络模拟
 
   提取码：UTSW
 
-### SUMO
+### 1.2. SUMO
 
 ![](./image/Veins/image10_SUMO_logo.jpg)
 
@@ -46,7 +51,7 @@ SUMO（Simulation of Urban Mobility），是开源、微观、多模态的城市
 - SUMO官网链接：[https://eclipse.dev/sumo/](https://eclipse.dev/sumo/)
 - SUMO官方文档：[https://sumo.dlr.de/docs/index.html](https://sumo.dlr.de/docs/index.html)
 
-### OMNeT++
+### 1.3. OMNeT++
 
 ![](./image/Veins/image11_OMNeT_logo.jpg)
 
@@ -55,7 +60,7 @@ Veins使用OMNeT++（Objective Modular Network Testbed）作为其网络模拟�
 - OMNeT++官网链接：[https://omnetpp.org/](https://omnetpp.org/)
 - OMNeT++官方文档：[https://omnetpp.org/documentation/](https://omnetpp.org/documentation/)
 
-## SUMO相关操作
+## 2. SUMO相关操作
 
 SUMO仿真器跑起来需要有三个文件，分别是Network、Route以及SUMO configuration file。
 
@@ -63,11 +68,11 @@ SUMO仿真器跑起来需要有三个文件，分别是Network、Route以及SUMO
 - `***.rou.xml`文件：生成车辆文件；
 - `***.sumocfg`文件：将net.xml和rou.xml文件结合起来实现仿真。
 
-### SUMO地图替换
+### 2.1. SUMO地图替换
 
 SUMO中路网文件的编写可以手动编写，也可以用`netconvert`命令转换第三方来源中的复杂路网。总体包括道路、交叉口的id和位置信息、车道信息（数量、长度、最大速度、形状、功能等）、优先权信息、交通信号信息、交叉口信息等。下面介绍了两种生成SUMO路网文件的方法。
 
-#### 1. 使用netconvert转换工具
+#### 2.1.1. 使用netconvert转换工具
 
 通过在命令提示符（cmd）中输入netconvert指令，能够将多种第三方的路网文件转化为SUMO可读的文件，具体可转化的第三方来源有：OpenStreetMap（一种开源的地图引擎）、PTV Vissim、OpenDrive、MATsim、ArcView、Elmar Brockfelds unsplitted and splitted NavTeq-data、RoboCup Rescue League folders等。例如在linux系统下使用OpenStreetMap导入地图操作如下：
 
@@ -102,6 +107,8 @@ SUMO中路网文件的编写可以手动编写，也可以用`netconvert`命令�
   /home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l
   /home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l
   ````
+  也可以类似下文示例代码`erlangen.rou.xml`文件中使用\<flow>元素定义一组具有相同特性（例如车辆类型、路线、发车时间等）的车辆。
+
 - `***.poly.xml`地形文件生成
 
   因为在veins仿真过程中，将用到地形文件。polyconvert转换工具可以根据`***.net.xml`和`***.osm`文件生成相应的地形文件。在终端输入以下内容生成地形文件
@@ -184,20 +191,28 @@ SUMO中路网文件的编写可以手动编写，也可以用`netconvert`命令�
 
   ![](./image/Veins/image34.jpg) 
 
-#### 2. 手动编写
+#### 2.1.2. 直接用netedit软件绘制地图
 
 - **路网编辑：**
-打开netedit通过选择 File->New Network 创建一个新网络，并确保Network被选中。以生成一个九宫格地图（2k×2k）为例。
+  
+  打开netedit通过选择 File->New Network 创建一个新网络，并确保Network被选中。以生成一个九宫格地图（2k×2k）为例。
 
   - 进入netedit：`...\sumo\bin\netedit.exe`
   - 创建网络：选择 File->New Network 创建一个新网络
   - 创建节点和边并修改属性：edge mode->（创建多个节点打开chain mode 模式）->inspect mode修改属性
-![](./image/Veins/image23.jpg)
-![](./image/Veins/image24.jpg)
+  
+    ![](./image/Veins/image23.jpg)
+
+    ![](./image/Veins/image24.jpg)
+
   - 添加反向车道：鼠标右键边->Edge operations->Add reverse direction for edge
-![](./image/Veins/image25.jpg)
-![](./image/Veins/image26.jpg)
-  - 根据需求create TLS
+
+    ![](./image/Veins/image25.jpg)
+
+    ![](./image/Veins/image26.jpg)
+
+  - 根据需求 create TLS
+  
   - 路网保存
 
     ![](./image/Veins/image27.jpg)
@@ -205,15 +220,17 @@ SUMO中路网文件的编写可以手动编写，也可以用`netconvert`命令�
     将保存的`***.net.xml`文件复制到veins，之后的操作参照方法1，但是由于没有建筑物等，不用生成地形文件`***.poly.xml`，在`***.sumo.cfg`文件中删除`<additional-files value="***.poly.xml"/>`。
 
     最后，在终端输入`sumo-gui ***.sumo.cfg`，运行效果如下：
+
     ![](./image/Veins/image35.jpg)
 
-### TraCI接口
+### 2.2. TraCI接口
 
 TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation of Urban MObility) 交通模拟器的接口，通过一个 TCP/IP 连接与 SUMO 通信。通过 TraCI，用户可以在运行模拟的同时，从外部程序改变交通网络的状态，例如改变车辆的速度或路线，切换交通灯的状态等。这使得用户可以创建交互式的模拟，或者实现复杂的控制策略。
 
 - SUMO中如何使用TraCI，官方文档：[https://sumo.dlr.de/docs/TraCI.html](https://sumo.dlr.de/docs/TraCI.html)
 
-### 参考链接
+
+### 2.3. 参考链接
 
 - Veins官网链接：[https://veins.car2x.org/](https://veins.car2x.org/)
 - SUMO官网链接：[https://eclipse.dev/sumo/](https://eclipse.dev/sumo/)
@@ -226,12 +243,12 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 - 哔哩哔哩·SUMO软件基本教学：[[link]](https://www.bilibili.com/video/BV1H7411F76B/?from=search&seid=18074238600246103248&vd_source=f17606480b273d73e7f15a69fe00985e)
 - SUMO中文视频教程：[[link]](https://space.bilibili.com/110602843?from=search&seid=6972657569966499773)
 
-## OMNeT++相关操作
+## 3. OMNeT++相关操作
 
 ![](./image/Veins/image12.jpg)
 
-### 示例代码介绍
-#### Veins示例代码中各文件定义
+### 3.1. 示例代码介绍
+#### 3.1.1 Veins示例代码中各文件定义
 
 - veins->examples->veins下各文件
   - results文件夹
@@ -271,7 +288,18 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 
   - erlangen.rou.xml
 
-    定义了路线文件，描述了车辆的路线。
+    定义了路线文件，描述了车辆的路线。这里提供了车流控制的方法。
+    
+    ````xml
+    <routes>
+    <vType id="vtype0" accel="2.6" decel="4.5" sigma="0.5" length="2.5" minGap="2.5" maxSpeed="14" color="1,1,0"/>
+    <route id="route0" edges="-39539626 -5445204#2 -5445204#1 113939244#2 -126606716 23339459 30405358#1 85355912 85355911#0 85355911#1 30405356 5931612 30350450#0 30350450#1 30350450#2 4006702#0 4006702#1 4900043 4900041#1"/>
+    <flow id="flow0" type="vtype0" route="route0" begin="0" period="3" number="195"/>
+    </routes>
+    ````
+    这段代码的意思是，在开始时间0的时候，有195辆类型为"vtype0"的车辆开始按照"route0"的路线行驶，每3秒钟就有一辆车开始行驶。每辆车的加速度为2.6，减速度为4.5，长度2.5，最小间隔2.5，最大速度14，颜色为黄色（RGB值为1,1,0）。sigma是车辆驾驶员模型的一个参数，它代表驾驶员的“驾驶错误”或“驾驶不确定性”。sigma值越高，驾驶员的行为就越随机，反之则更接近理想的驾驶行为。
+
+    如果仿真需要修改车流行驶路线，可以在 `netedit` 中打开 `***.net.xml` 路网文件获取道路id，按照道路顺序（注意车辆行驶方向）将 `route id` 填入相应为位置，即可生成一组具有相同特性（例如车辆类型、路线、发车时间等）的车辆。
 
   - erlangen.sumo.cfg
 
@@ -285,18 +313,18 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 
     这个文件描述了一个名为 RSUExampleScenario 的网络，该网络扩展自 Scenario 类，并包含一个 RSU 类型的子模块。更改仿真场景RSU数量时需要修改此文件，源代码如下：
 
-    ````Java
-    import org.car2x.veins.nodes.RSU;
-    import org.car2x.veins.nodes.Scenario;
+  ````Java
+  import org.car2x.veins.nodes.RSU;
+  import org.car2x.veins.nodes.Scenario;
 
-    network RSUExampleScenario extends Scenario
-    {
-      submodules:
-        rsu[1]: RSU {     // 更改仿真场景RSU数量时需要修改此处
-          @display("p=150,140;i=veins/sign/yellowdiamond;is=vs");
-        }
-    }
-    ````
+  network RSUExampleScenario extends Scenario
+  {
+    submodules:
+      rsu[1]: RSU {     // 更改仿真场景RSU数量时需要修改此处
+        @display("p=150,140;i=veins/sign/yellowdiamond;is=vs");
+      }
+  }
+  ````
 
 
 - veins->src->veins->modules->applicaton->traci下各文件（主要在该目录下编写仿真代码）
@@ -304,16 +332,16 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
   - TraCIDemo11p.ned
 
     定义了一个名为 TraCIDemo11p 的简单模块，用于模拟车辆的应用层功能。该模块可以进行处理和发送基于车载网络的消息。
-    ````Java
-    package org.car2x.veins.modules.application.traci;
-    import org.car2x.veins.modules.application.ieee80211p.DemoBaseApplLayer;
+  ````Java
+  package org.car2x.veins.modules.application.traci;
+  import org.car2x.veins.modules.application.ieee80211p.DemoBaseApplLayer;
 
-    simple TraCIDemo11p extends DemoBaseApplLayer
-    {
-        @class(veins::TraCIDemo11p);
-        @display("i=block/app2");
-    }
-    ````
+  simple TraCIDemo11p extends DemoBaseApplLayer
+  {
+      @class(veins::TraCIDemo11p);
+      @display("i=block/app2");
+  }
+  ````
 
   - TraCIDemo11p.h
 
@@ -614,7 +642,8 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
   }
   ````
 
-### 常用功能代码编写
+### 3.2. 常用功能代码编写
+#### 3.2.1. 发送与接收 WSM 消息
 - 发送 WSM 消息
   新建一条WSM消息并广播，代码如下：
 
@@ -649,7 +678,7 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 
   ![](./image/Veins/image18.jpg)
 
-- 设置多个RSU
+#### 3.2.2. 设置多个RSU
   
   在设计我们的仿真场景时，我们可能会涉及到多个RSU，需要在 `veins->examples->veins->RSUExampleScenario.ned` 文件中设置RSU数量，并且在 `veins->examples->veins->omnetpp.ini` 文件中设置每个RSU相对于地图中的位置。例如在示例场景中简单设置2个RSU，代码如下：
 
@@ -694,6 +723,7 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 
   ![image19](image/Veins/image19.jpg)
 
+#### 3.2.3. 获取节点位置和速度
 - 获取节点位置
   
   在`veins->src->veins->modules->application->traci->TraCIDemo11p.cc`或`MyVeinsApp.cc`中可以通过如下指令获取车辆位置。例如在`TraCIDemo11p.cc`中通过函数`void TraCIDemo11p::handlePositionUpdate(cObject* obj)`控制车辆在每次位置更新时输出位置，代码如下:
@@ -726,27 +756,99 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 
   ![](./image/Veins/image21.png)
 
-- 获取消息的接收功率
+
+#### 3.2.4. 获取消息的接收功率
   
-  在进行Sybil攻击检测仿真时，计算接收信号强度（RSSI）需要用到消息的接收功率，获取接收功率代码如下：
+在进行Sybil攻击检测仿真时，计算接收信号强度（RSSI）需要用到消息的接收功率，获取接收功率代码如下：
 
-  ````c++
-  // 头文件
-  #include "veins/base/phyLayer/PhyToMacControlInfo.h"
-  #include "veins/modules/phy/DeciderResult80211.h"
+````c++
+// 头文件
+#include "veins/base/phyLayer/PhyToMacControlInfo.h"
+#include "veins/modules/phy/DeciderResult80211.h"
 
-  // 代码
-  double curRecvPower_dBm = check_and_cast<DeciderResult80211*>(check_and_cast<PhyToMacControlInfo*>(rewsm->getControlInfo())->getDeciderResult())->getRecvPower_dBm();  //  rewsm 表示接收的一条WSM消息
-  std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
-  ````  
+// 代码
+double curRecvPower_dBm = check_and_cast<DeciderResult80211*>(check_and_cast<PhyToMacControlInfo*>(rewsm->getControlInfo())->getDeciderResult())->getRecvPower_dBm();  //  rewsm 表示接收的一条WSM消息
+std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
+````  
 
-  效果如下：
+效果如下：
 
-  ![](./image/Veins/image22.png)
+![](./image/Veins/image22.png)
+
+#### 3.2.5. 新建一种ReportMessage消息类型
+- 首先需自定义一个 ReportMessage，可以在 `veins/src/veins/modules/messages` 路径下新建一个 `ReportMessage.msg` 文件，代码内容如下：
+  
+  ```java
+  import veins.base.utils.Coord;
+  import veins.modules.messages.BaseFrame1609_4;
+  import veins.base.utils.SimpleAddress;
+
+  namespace veins;
+
+  packet ReportMessage extends BaseFrame1609_4 {
+      Coord senderPos;
+      LAddress::L2Type senderAddress = -1;
+  }
+  ```
+  ReportMessage继承了BaseFrame1609_4并包含两个属性分别是Coord类型的发送者所标，以及L2Type的发送者ID。编译之后同目录下生成同名.h和.cc文件。其函数实现暂时不做修改，默认的setter和getter足够使用。BaseFrame为最基础的消息帧，只包含几个基础属性，便于自定义。
+
+- 接下来需要在 `/veins/src/veins/modules/application/ieee80211p/` 路径下修改添加如下代码：
+  - 在 `DemoBaseApplLayer.h ` 的 protected 成员中添加：
+  ```cpp
+  #include "veins/modules/messages/ReportMessage_m.h"
+
+  /** @brief this function is called upon receiving a ReportMessage */
+  virtual void onRM(ReportMessage* rm){};
+  ···
+  uint32_t receivedRMs;
+  ···
+  ```  
+
+  - 在 `DemoBaseApplLayer.cc ` 中添加：
+  ```cpp
+  #include "veins/modules/messages/ReportMessage_m.h"
+
+  void DemoBaseApplLayer::handleLowerMsg(cMessage* msg)
+  {
+
+      ···
+      else if (ReportMessage* rm = dynamic_cast<ReportMessage*>(wsm)) {
+          receivedRMs++;
+          onRM(rm);
+      }
+      ···
+  }
+  ``` 
+  
+- 之后就可以类似收发 WSM 类型消息一样，如发 ReportMessage，示例如下：
+
+  ```cpp
+  ReportMessage* rm = new ReportMessage();
+  populateWSM(rm);
+  rm->setSenderAddress(myId);
+  sendDown(rm->dup());
+  ```
+  收消息时自定义一个成员函数：
+  ```cpp
+  // ***.h 头文件中
+  ···
+  void onRM(ReportMessage* fram) override;
+  ···
+
+  // ***.cc 中
+  void TraCIDemoRSU11p::onRM(ReportMessage* frame)
+  {
+      ReportMessage* rm = check_and_cast<ReportMessage*>(frame);
+      ···
+  }
+  ```
+
+- 参考链接
+  - [https://blog.zifan.wang/zh/categories/Veins/](https://blog.zifan.wang/zh/categories/Veins/)
+  - [https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg](https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg)
 
 
-
-### OMNeT++中链接OpenSSL库
+### 3.3. OMNeT++中链接OpenSSL库
 
 - 在linux中安装OpenSSL库
   参考链接：CSDN博客·Linux环境下安装OpenSSL（源码方式安装）：[[link]](https://blog.csdn.net/weixin_39274753/article/details/107958283)
@@ -759,19 +861,14 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
   ![](./image/Veins/image15.png)
 
 
-## 平台中可能遇到的问题
+## 4. 平台中可能遇到的问题
 
-### Ubuntu磁盘扩容
+### 4.1. Ubuntu磁盘扩容
 
 - CSDN博客·Ubuntu磁盘扩容：[link](https://blog.csdn.net/qq_45853229/article/details/124595300?ydreferer=aHR0cHM6Ly9jbi5iaW5nLmNvbS8=)
 
-### 安装中文输入法
+### 4.2. 安装中文输入法
 
 - 知乎·Debian10 更换软件源 & 配置中文环境 & 安装中文输入法：[[link]](https://zhuanlan.zhihu.com/p/106775707)
 - CSDN博客·Linux下安装中文输入法：[[link]](https://blog.csdn.net/yanhanhui1/article/details/115128309)
 - CSDN博客·Ubuntu 20.04安装搜狗输入法[[link]](https://blog.csdn.net/code_change_era/article/details/113834432)
-
-
-[def]: #安装中文输入法
-
-ovo
