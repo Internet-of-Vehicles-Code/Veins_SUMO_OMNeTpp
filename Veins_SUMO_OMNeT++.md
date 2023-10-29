@@ -36,11 +36,13 @@ Veins（Vehicles in Network Simulation）是一个用于运行车辆网络模拟
 
 - Veins官网链接：[https://veins.car2x.org/](https://veins.car2x.org/)
 - 目前车联网小分队成员常用的 Veins 仿真平台，下载用VM虚拟机打开即可。
-- 如果需要自定义版本安装，可参考 Ubuntu 下 Veins5.2 安装教程：[[link]](https://github.com/Yrongovo/Veins5.2-Ubuntu18.04-Installation-Guide)
 
   链接：[https://pan.quark.cn/s/afe7a9459aa0](https://pan.quark.cn/s/afe7a9459aa0)
 
   提取码：UTSW
+
+- 如果需要自定义版本安装，可参考 Ubuntu 下 Veins5.2 安装教程：[[link]](https://github.com/Yrongovo/Veins5.2-Ubuntu18.04-Installation-Guide)
+
 
 ### 1.2. SUMO
 
