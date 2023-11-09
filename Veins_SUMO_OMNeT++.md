@@ -253,9 +253,6 @@ TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation o
 
 ### 2.3. 参考链接
 
-- Veins 官网链接：[https://veins.car2x.org/](https://veins.car2x.org/)
-- SUMO 官网链接：[https://eclipse.dev/sumo/](https://eclipse.dev/sumo/)
-- SUMO 官方用户文档：[https://sumo.dlr.de/docs/index.html](https://sumo.dlr.de/docs/index.html)
 - SUMO 教程：[https://blog.csdn.net/weixin_47786612/article/details/130164305](https://blog.csdn.net/weixin_47786612/article/details/130164305)
 - SUMO 学习入门：[https://zhuanlan.zhihu.com/p/157232558](https://zhuanlan.zhihu.com/p/157232558)
 - SUMO 学习入门（二）路网文件生成：[https://zhuanlan.zhihu.com/p/164777831](https://zhuanlan.zhihu.com/p/164777831)
