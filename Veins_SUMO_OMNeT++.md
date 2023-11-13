@@ -17,6 +17,7 @@
     - [3.2.3. 获取节点位置和速度](#323-获取节点位置和速度)
     - [3.2.4. 获取消息的接收功率](#324-获取消息的接收功率)
     - [3.2.5. 新建一种ReportMessage消息类型](#325-新建一种reportmessage消息类型)
+    - [3.2.6. 修改信道衰落模型](#326-修改信道衰落模型)
   - [3.3. OMNeT++中链接OpenSSL库](#33-omnet中链接openssl库)
 - [4. 平台中可能遇到的问题](#4-平台中可能遇到的问题)
   - [4.1. Ubuntu磁盘扩容](#41-ubuntu磁盘扩容)
@@ -245,14 +246,19 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
   - 参考链接：[知网：北邮-张晗-车联网中假名撤销机制的研究与实现](https://kns.cnki.net/kcms2/article/abstract?v=KaAwsYWd1tIY5bAitK1NevFPkDHO6q_i4UobpJ2rv-XKeMd657vQZPIqSEOKhWvUGhl8LeGOgZQUAxoeQFAf6BJtmy7kBxmtO-qBmvchWBpsshTcQ6kPoi9nbBvouxWbDOohDBdLLAWDOoJ7kR8dMA==&uniplatform=NZKPT&language=CHS)
   - 工具介绍：[https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html](https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html)
 ### 2.2. TraCI接口
+相关代码文件路径：`/veins/src/veins/modules/mobility/traci`。
 
 TraCI (Traffic Control Interface) 是一个用于远程控制 SUMO (Simulation of Urban MObility) 交通模拟器的接口，通过一个 TCP/IP 连接与 SUMO 通信。通过 TraCI，用户可以在运行模拟的同时，从外部程序改变交通网络的状态，例如改变车辆的速度或路线，切换交通灯的状态等。这使得用户可以创建交互式的模拟，或者实现复杂的控制策略。
 
-- SUMO 中如何使用 TraCI，官方文档：[https://sumo.dlr.de/docs/TraCI.html](https://sumo.dlr.de/docs/TraCI.html)
+Veins 为 SUMO 中行驶的每辆车实例化一个网络节点。此任务由 TraCIScenarioManagerLaunchd 模块处理：它连接到 TraCI 服务器（SUMO 或 Veins_launchd）并订阅车辆创建和移动等事件。对于 SUMO 中创建的每一辆车，它都会在 OMNeT++ 模拟中实例化一个 OMNeT++ 复合模块。假定该模块包含类型为 的移动性子模块 TraCIMobility。它将定期使用该模块推进 SUMO 中的模拟，并根据车辆的行为更新节点的移动信息（例如位置、速度和方向）。为了快速测试，该 TraCIMobility 模块还包括在预定义时间点停止车辆的功能（通过其 accidentStart 和 accidentDuration 参数进行配置）。
+
+- 参考链接：[http://veins.car2x.org/documentation/modules/#traci](http://veins.car2x.org/documentation/modules/#traci)
+
 
 
 ### 2.3. 参考链接
 
+- SUMO 中如何使用 TraCI，官方文档：[https://sumo.dlr.de/docs/TraCI.html](https://sumo.dlr.de/docs/TraCI.html)
 - SUMO 教程：[https://blog.csdn.net/weixin_47786612/article/details/130164305](https://blog.csdn.net/weixin_47786612/article/details/130164305)
 - SUMO 学习入门：[https://zhuanlan.zhihu.com/p/157232558](https://zhuanlan.zhihu.com/p/157232558)
 - SUMO 学习入门（二）路网文件生成：[https://zhuanlan.zhihu.com/p/164777831](https://zhuanlan.zhihu.com/p/164777831)
@@ -867,6 +873,27 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
 - 参考链接 👍👍👍
   - [https://blog.zifan.wang/zh/categories/Veins/](https://blog.zifan.wang/zh/categories/Veins/)
   - [https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg](https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg)
+
+#### 3.2.6. 修改信道衰落模型
+进入 `veins->examples->veins->config.xml` 文件中，修改如下代码块：
+
+  ![](./image/Veins/image41.png)
+
+  其实，示例代码中已经编写好了很多信道衰落模型供我们仿真时进行替换，在 `veins->src->veins->modules->analogueModel` 路径下，如下：
+
+  ![](./image/Veins/image40.png)
+
+  比如，我们将 "SimplePathlossModel" 改为 "TwoRayInterferenceModel"，该模型实际上设法捕获地面反射效应，修改代码块如下：
+
+  ```xml
+  <AnalogueModel type="TwoRayInterferenceModel">
+    <parameter name="DielectricConstant" type="double" value="1.02"/>
+  </AnalogueModel>
+  ``` 
+  其中，`DielectricConstant` 类型是 `double`，通常表示介电常数，即传播媒体的电学性质。
+
+  - 参考链接：[http://veins.car2x.org/documentation/modules/#tworay](http://veins.car2x.org/documentation/modules/#tworay)
+
 
 
 ### 3.3. OMNeT++中链接OpenSSL库
