@@ -895,7 +895,7 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
   - 参考链接：[http://veins.car2x.org/documentation/modules/#tworay](http://veins.car2x.org/documentation/modules/#tworay)
 
 衰落模型测试：
-仿真场景中设置一辆车，最大速度为 30 m/s 时，使用 SimplePathlossModel 衰落因子值设置为 2.0 时，场景中接收消息情况是 101/200，值设置为 0 即无衰落时，场景中接收消息情况是 200/200；使用 NakagamiFading 时，场景中接收消息情况是 165/200；使用 TwoRayInterferenceModel 时，场景中接收消息情况是 116/200。
+仿真场景中设置 1 辆车，最大速度为 30 m/s 时，考虑建筑物遮挡即 SimpleObstacleShadowing 时，使用 SimplePathlossModel 衰落因子值设置为 2.0 时，场景中接收消息情况是 101/200，值设置为 0 即无衰落时，场景中接收消息情况是 200/200；使用 NakagamiFading 时，场景中接收消息情况是 165/200；使用 TwoRayInterferenceModel 时，场景中接收消息情况是 116/200。
 
 
 ### 3.3. OMNeT++中链接OpenSSL库
