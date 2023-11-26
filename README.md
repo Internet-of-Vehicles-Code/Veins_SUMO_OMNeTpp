@@ -37,11 +37,11 @@
 Veins（Vehicles in Network Simulation）是一个用于运行车辆网络模拟的开源框架，包括一套全面的模型，能够模拟车辆通信系统，包括车对车（Vehicle-to-Vehicle，简称V2V）和车对基础设施（Vehicle-to-Infrastructure，简称V2I）的通信。Veins通过TCP套接字连接基于事件的网络模拟器（OMNeT++）和道路交通模拟器（SUMO）。
 
 - Veins官网链接：[https://veins.car2x.org/](https://veins.car2x.org/)
-- 目前车联网小分队成员常用的 Veins 仿真平台，下载用VM虚拟机打开即可。
+- 目前车联网小分队成员常用的版本为 `Veins 5.2-i1` ，下载用 VM 虚拟机打开即可。
 
-  链接：[[link]](https://pan.quark.cn/s/1bff4c24f0df)
-  
-  提取码：Vica
+  链接：[https://veins.car2x.org/download/](https://veins.car2x.org/download/)
+
+
 
 - 如果需要自定义版本安装，可参考 Ubuntu 下 Veins5.2 安装教程：[[link]](https://github.com/Yrongovo/Veins5.2-Ubuntu18.04-Installation-Guide)
 
