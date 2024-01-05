@@ -6,7 +6,7 @@
   - [2.1. SUMO地图替换](#21-sumo地图替换)
     - [2.1.1. 使用netconvert转换工具](#211-使用netconvert转换工具)
     - [2.1.2. 直接用netedit软件绘制地图](#212-直接用netedit软件绘制地图)
-    - [2.1.3. 使用 osmWebWizard 工具](#213-使用-osmwebwizard-工具)
+    - [2.1.3. 使用 OSMWebWizard 工具](#213-使用-osmwebwizard-工具)
   - [2.2. TraCI接口](#22-traci接口)
   - [2.3. 参考链接](#23-参考链接)
 - [3. OMNeT++相关操作](#3-omnet相关操作)
@@ -241,8 +241,8 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
 
     ![](./image/Veins/image35.jpg)
 
-#### 2.1.3. 使用 osmWebWizard 工具
-利用 SUMO 根目录下的 osmWebWizard.py 脚本生成网络文件 `***.net.xml` 和路由文件 `***.rou.xml`。osmWebWizard 是 SUMO 自带的开放地图生成工具，只需选取地区、配置参数即能完成文件的生成。仿真系统中对车辆行驶路径并没有特殊要求，可直接使用 osmWebWizard 生成的随机车流。
+#### 2.1.3. 使用 OSMWebWizard 工具
+利用 SUMO 根目录下的 OSMWebWizard.py 脚本生成网络文件 `***.net.xml` 和路由文件 `***.rou.xml`。OSMWebWizard 是 SUMO 自带的开放地图生成工具，只需选取地区、配置参数即能完成文件的生成。仿真系统中对车辆行驶路径并没有特殊要求，可直接使用 OSMWebWizard 生成的随机车流。其中OSMWebWizard.py文件路径：`/sumo/tools/OSMWebWizard.py`
   - 参考链接：[知网：北邮-张晗-车联网中假名撤销机制的研究与实现](https://kns.cnki.net/kcms2/article/abstract?v=KaAwsYWd1tIY5bAitK1NevFPkDHO6q_i4UobpJ2rv-XKeMd657vQZPIqSEOKhWvUGhl8LeGOgZQUAxoeQFAf6BJtmy7kBxmtO-qBmvchWBpsshTcQ6kPoi9nbBvouxWbDOohDBdLLAWDOoJ7kR8dMA==&uniplatform=NZKPT&language=CHS)
   - 工具介绍：[https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html](https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html)
 ### 2.2. TraCI接口
@@ -324,8 +324,17 @@ Veins 为 SUMO 中行驶的每辆车实例化一个网络节点。此任务由 T
     ````
     这段代码的意思是，在开始时间0的时候，有195辆类型为 "vtype0" 的车辆开始按照 "route0" 的路线行驶，每3秒钟就有一辆车开始行驶。每辆车的加速度为2.6，减速度为 4.5，长度 2.5，最小间隔 2.5，最大速度 14，颜色为黄色（RGB值为1,1,0）。sigma 是车辆驾驶员模型的一个参数，它代表驾驶员的“驾驶错误”或“驾驶不确定性”。sigma 值越高，驾驶员的行为就越随机，反之则更接近理想的驾驶行为。
 
-    如果仿真需要修改车流行驶路线，可以在 `netedit` 中打开 `***.net.xml` 路网文件获取道路id，按照道路顺序（注意车辆行驶方向）将 `route id` 填入相应为位置，即可生成一组具有相同特性（例如车辆类型、路线、发车时间等）的车辆。
-
+    - 如果仿真需要修改车流行驶路线，可以在 `netedit` 中打开 `***.net.xml` 路网文件获取道路id，按照道路顺序（注意车辆行驶方向）将 `route id` 填入相应为位置，即可生成一组具有相同特性（例如车辆类型、路线、发车时间等）的车辆。以修改地图路径为`Home/src/veins/examples/veins/***.sumo.cfg`的车流行驶路线为例，详细步骤如下：
+      a. 在`Home/src/veins/examples/veins`右键打开终端，键入
+      ```
+      sumo-gui map.sumo.cfg
+      ```
+      b. 选择`Edit`下的`Open in netedit`
+      ![](image/Veins/image42.png)
+      c. 查看预设路线上的所有路径id（每两个结点之间的单个方向具有一个id，不同行驶方向具有不同id）
+      ![](image/Veins/image43.png)
+      ![](image/Veins/image44.png)
+      d. 将选择的路线按照车流行驶顺序修改相应的`***.rou.xml`
   - erlangen.sumo.cfg
 
     定义 SUMO 模拟的输入文件、模拟的时间参数、报告设置以及 GUI 的行为。\<input>：这部分定义了模拟的输入文件。\<time>：这部分定义了模拟时间的参数(开始时间、结束时间、时间步长)。\<report>：这部分定义了模拟报告的设置。\<gui_only>：这部分定义了 GUI 的行为。
