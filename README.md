@@ -705,7 +705,6 @@ populateWSM(newWSM);
 std::string newWSM_str = "A new WSM type message.";
 newWSM->setSenderAddress(myId);
 newWSM->setDemoData(newWSM_str.data());
-newWSM->setType(4);
 //sendDown(newWSM->dup());
 sendDelayedDown(newWSM->dup(), uniform(0.01, 0.1)); //设置一个随机时延uniform(0.01, 0.1)避免冲突。
 ```
