@@ -697,6 +697,20 @@ Veins 为 SUMO 中行驶的每辆车实例化一个网络节点。此任务由 T
 
   ![](./image/Veins/image17.jpg)
 
+然而，在仿真过程中，我们偶尔会遇到同时由多辆车发送消息的情况，如果通过`sendDown(newWSM->dup())`来直接发送消息可能会导致消息的接收率降低，原因在于消息包可能会互相冲突。鉴于OMNeT++基于事件驱动的机制，我们可以利用内置的函数`DemoBaseApplLayer::sendDelayedDown(cMessage* msg, simtime_t delay)`来缓解这一问题。具体思路是为每条消息引入一定的随机延时，示例如下：
+
+```
+TraCIDemo11pMessage* newWSM = new TraCIDemo11pMessage();
+populateWSM(newWSM);
+std::string newWSM_str = "A new WSM type message.";
+newWSM->setSenderAddress(myId);
+newWSM->setDemoData(newWSM_str.data());
+newWSM->setType(4);
+//sendDown(newWSM->dup());
+sendDelayedDown(newWSM->dup(), uniform(0.01, 0.1)); //设置一个随机时延uniform(0.01, 0.1)避免冲突。
+```
+
+
 - 接收 WSM 消息
   
   接收WSM消息，代码如下：
