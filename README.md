@@ -7,6 +7,7 @@
     - [2.1.1. 使用netconvert转换工具](#211-使用netconvert转换工具)
     - [2.1.2. 直接用netedit软件绘制地图](#212-直接用netedit软件绘制地图)
     - [2.1.3. 使用 OSMWebWizard 工具](#213-使用-osmwebwizard-工具)
+    - [2.1.4. 关于生成随机车辆轨迹](#214-关于生成随机车辆轨迹)
   - [2.2. TraCI接口](#22-traci接口)
   - [2.3. 参考链接](#23-参考链接)
 - [3. OMNeT++相关操作](#3-omnet相关操作)
@@ -247,6 +248,30 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
 利用 SUMO 根目录下的 OSMWebWizard.py 脚本生成网络文件 `***.net.xml` 和路由文件 `***.rou.xml`。OSMWebWizard 是 SUMO 自带的开放地图生成工具，只需选取地区、配置参数即能完成文件的生成。仿真系统中对车辆行驶路径并没有特殊要求，可直接使用 OSMWebWizard 生成的随机车流。其中OSMWebWizard.py文件路径：`/sumo/tools/OSMWebWizard.py`
   - 参考链接：[知网：北邮-张晗-车联网中假名撤销机制的研究与实现](https://kns.cnki.net/kcms2/article/abstract?v=KaAwsYWd1tIY5bAitK1NevFPkDHO6q_i4UobpJ2rv-XKeMd657vQZPIqSEOKhWvUGhl8LeGOgZQUAxoeQFAf6BJtmy7kBxmtO-qBmvchWBpsshTcQ6kPoi9nbBvouxWbDOohDBdLLAWDOoJ7kR8dMA==&uniplatform=NZKPT&language=CHS)
   - 工具介绍：[https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html](https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html)
+
+#### 2.1.4. 关于生成随机车辆轨迹
+前面 2.1.1 节提到，使用下面两行代码可生成随机车辆行为
+````
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l
+````
+但是，我们会发现，对于同一个路网文件，每次运行得到的都是相同车辆轨迹。这时我们可以在脚本命令中添加 `--random` 参数，让 SUMO 选择一个基于当前时间的种子，如下
+```
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l --random
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l --random
+```
+或者，使用 `--seed` 参数手动指定一个种子值，每次使用不同的值以产生不同的结果：
+```
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l --seed 42
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l --seed 42
+```
+```
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l --seed 43
+/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l --seed 43
+```
+要么让 SUMO 随机选择种子，要么手动指定不同的种子值，这样就能够保证每次模拟的结果都充满了新鲜感和不确定性，正如现实世界中的行程一般。
+
+
 ### 2.2. TraCI接口
 相关代码文件路径：`/veins/src/veins/modules/mobility/traci`。
 
