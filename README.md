@@ -19,6 +19,7 @@
     - [3.2.4. 获取消息的接收功率](#324-获取消息的接收功率)
     - [3.2.5. 新建一种ReportMessage消息类型](#325-新建一种reportmessage消息类型)
     - [3.2.6. 修改信道衰落模型](#326-修改信道衰落模型)
+    - [3.2.7. RSU通信范围显示](#327-rsu通信范围显示)
   - [3.3. OMNeT++中链接OpenSSL库](#33-omnet中链接openssl库)
 - [4. 平台中可能遇到的问题](#4-平台中可能遇到的问题)
   - [4.1. Ubuntu磁盘扩容](#41-ubuntu磁盘扩容)
@@ -722,6 +723,18 @@ Veins 为 SUMO 中行驶的每辆车实例化一个网络节点。此任务由 T
 
   ![](./image/Veins/image17.jpg)
 
+  仿真结束后，会出现一堆这种这个，原因在于newWSM对象在模拟结束时没有被正确释放或删除，导致内存泄漏。
+  ```
+  undisposed object: (veins::TraCIDemo11pMessage) RSUExampleScenario.node[7].appl. -- check module destructor
+  undisposed object: (veins::TraCIDemo11pMessage) RSUExampleScenario.node[7].appl. -- check module destructor
+  undisposed object: (veins::TraCIDemo11pMessage) RSUExampleScenario.node[7].appl. -- check module destructor
+  ```
+  可以使用 delete 来释放这个对象占用的内存，即
+  ```
+  delete newWSM; 
+  ```
+
+
 然而，在仿真过程中，我们偶尔会遇到同时由多节点发送消息的情况，如果通过`sendDown(newWSM->dup())`来直接发送消息可能会导致消息的接收率降低，原因在于消息包可能会互相冲突。鉴于OMNeT++基于事件驱动的机制，我们可以利用内置的函数`DemoBaseApplLayer::sendDelayedDown(cMessage* msg, simtime_t delay)`来缓解这一问题。具体思路是为每条消息引入一定的随机延时，示例如下：
 
 ```
@@ -946,6 +959,24 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
 
 衰落模型测试：
 仿真场景中设置 1 辆车，最大速度为 30 m/s 时，考虑建筑物遮挡即 SimpleObstacleShadowing 时，使用 SimplePathlossModel 衰落因子值设置为 2.0 时，场景中接收消息情况是 101/200，值设置为 0 即无衰落时，场景中接收消息情况是 200/200；使用 NakagamiFading 时，场景中接收消息情况是 165/200；使用 TwoRayInterferenceModel 时，场景中接收消息情况是 116/200。
+
+#### 3.2.7. RSU通信范围显示
+在`xx.ini`文件中，有一个通信范围显示开关，
+```ini
+*.connectionManager.drawMaxIntfDist = true
+```
+开启之后，所有节点的通信范围都显示。如果我们只需要显示RSU的通信范围，可以修改`src/veins/base/connectionManager/BaseConnectionManager.cc`中的`registerNic`函数，即将
+```cpp
+if (drawMIR) {
+    nic->getParentModule()->getDisplayString().setTagArg("r", 0, maxInterferenceDistance);
+}
+```
+改为
+```cpp
+if (drawMIR && strcmp(nic->getParentModule()->getName(), "rsu") == 0) {
+    nic->getParentModule()->getDisplayString().setTagArg("r", 0, maxInterferenceDistance);
+}
+```
 
 
 ### 3.3. OMNeT++中链接OpenSSL库
