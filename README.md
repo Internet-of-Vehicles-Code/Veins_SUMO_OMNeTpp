@@ -7,7 +7,6 @@
     - [2.1.1. 使用netconvert转换工具](#211-使用netconvert转换工具)
     - [2.1.2. 直接用netedit软件绘制地图](#212-直接用netedit软件绘制地图)
     - [2.1.3. 使用 OSMWebWizard 工具](#213-使用-osmwebwizard-工具)
-    - [2.1.4. 关于生成随机车辆轨迹](#214-关于生成随机车辆轨迹)
   - [2.2. TraCI接口](#22-traci接口)
   - [2.3. 参考链接](#23-参考链接)
 - [3. OMNeT++相关操作](#3-omnet相关操作)
@@ -16,15 +15,12 @@
     - [3.2.1. 发送与接收 WSM 消息](#321-发送与接收-wsm-消息)
     - [3.2.2. 设置多个RSU](#322-设置多个rsu)
     - [3.2.3. 获取节点位置和速度](#323-获取节点位置和速度)
-    - [3.2.4. 获取消息的接收功率](#324-获取消息的接收功率)
-    - [3.2.5. 新建一种ReportMessage消息类型](#325-新建一种reportmessage消息类型)
-    - [3.2.6. 修改信道衰落模型](#326-修改信道衰落模型)
-    - [3.2.7. RSU通信范围显示](#327-rsu通信范围显示)
+    - [3.2.4. 新建一种ReportMessage消息类型](#324-新建一种reportmessage消息类型)
+    - [3.2.5. RSU通信范围显示](#325-rsu通信范围显示)
   - [3.3. OMNeT++中链接OpenSSL库](#33-omnet中链接openssl库)
 - [4. 平台中可能遇到的问题](#4-平台中可能遇到的问题)
   - [4.1. Ubuntu磁盘扩容](#41-ubuntu磁盘扩容)
   - [4.2. 安装中文输入法](#42-安装中文输入法)
-
 
 
 
@@ -249,28 +245,6 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
 利用 SUMO 根目录下的 OSMWebWizard.py 脚本生成网络文件 `***.net.xml` 和路由文件 `***.rou.xml`。OSMWebWizard 是 SUMO 自带的开放地图生成工具，只需选取地区、配置参数即能完成文件的生成。仿真系统中对车辆行驶路径并没有特殊要求，可直接使用 OSMWebWizard 生成的随机车流。其中OSMWebWizard.py文件路径：`/sumo/tools/OSMWebWizard.py`
   - 参考链接：[知网：北邮-张晗-车联网中假名撤销机制的研究与实现](https://kns.cnki.net/kcms2/article/abstract?v=KaAwsYWd1tIY5bAitK1NevFPkDHO6q_i4UobpJ2rv-XKeMd657vQZPIqSEOKhWvUGhl8LeGOgZQUAxoeQFAf6BJtmy7kBxmtO-qBmvchWBpsshTcQ6kPoi9nbBvouxWbDOohDBdLLAWDOoJ7kR8dMA==&uniplatform=NZKPT&language=CHS)
   - 工具介绍：[https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html](https://sumo.dlr.de/docs/Tutorials/OSMWebWizard.html)
-
-#### 2.1.4. 关于生成随机车辆轨迹
-前面 2.1.1 节提到，使用下面两行代码可生成随机车辆行为
-````
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l
-````
-但是，我们会发现，对于同一个路网文件，每次运行得到的都是相同车辆轨迹。这时我们可以在脚本命令中添加 `--random` 参数，让 SUMO 选择一个基于当前时间的种子，如下
-```
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l --random
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l --random
-```
-或者，使用 `--seed` 参数手动指定一个种子值，每次使用不同的值以产生不同的结果：
-```
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l --seed 42
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l --seed 42
-```
-```
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l --seed 43
-/home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -r map.rou.xml -e 100 -l --seed 43
-```
-要么让 SUMO 随机选择种子，要么手动指定不同的种子值，这样就能够保证每次模拟的结果都充满了新鲜感和不确定性，正如现实世界中的行程一般。
 
 
 ### 2.2. TraCI接口
@@ -845,27 +819,7 @@ sendDelayedDown(newWSM->dup(), uniform(0.01, 0.1)); //设置一个随机时延un
   ![](./image/Veins/image21.png)
 
 
-#### 3.2.4. 获取消息的接收功率
-  
-在进行 Sybil 攻击检测仿真时，计算接收信号强度（RSSI）需要用到消息的接收功率，获取接收功率代码如下：
-
-````c++
-// 头文件
-#include "veins/base/phyLayer/PhyToMacControlInfo.h"
-#include "veins/modules/phy/DeciderResult80211.h"
-
-// 代码
-double curRecvPower_dBm = check_and_cast<DeciderResult80211*>(check_and_cast<PhyToMacControlInfo*>(rewsm->getControlInfo())->getDeciderResult())->getRecvPower_dBm();  //  rewsm 表示接收的一条WSM消息
-std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
-````  
-
-效果如下：
-
-![](./image/Veins/image22.png)
-
-参考链接：[https://www.coder.work/article/6774522](https://www.coder.work/article/6774522)
-
-#### 3.2.5. 新建一种ReportMessage消息类型
+#### 3.2.4. 新建一种ReportMessage消息类型
 - 首先需自定义一个 ReportMessage，可以在 `veins/src/veins/modules/messages` 路径下新建一个 `ReportMessage.msg` 文件，代码内容如下：
   
   ```java
@@ -937,30 +891,9 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
   - [https://blog.zifan.wang/zh/categories/Veins/](https://blog.zifan.wang/zh/categories/Veins/)
   - [https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg](https://github.com/SpereShelde/Veins/wiki/Veins-ReportMsg)
 
-#### 3.2.6. 修改信道衰落模型
-进入 `veins->examples->veins->config.xml` 文件中，修改如下代码块：
 
-  ![](./image/Veins/image41.png)
 
-  其实，示例代码中已经编写好了很多信道衰落模型供我们仿真时进行替换，在 `veins->src->veins->modules->analogueModel` 路径下，如下：
-
-  ![](./image/Veins/image40.png)
-
-  比如，我们将 "SimplePathlossModel" 改为 "TwoRayInterferenceModel"，该模型实际上设法捕获地面反射效应，修改代码块如下：
-
-  ```xml
-  <AnalogueModel type="TwoRayInterferenceModel">
-    <parameter name="DielectricConstant" type="double" value="1.02"/>
-  </AnalogueModel>
-  ``` 
-  其中，`DielectricConstant` 类型是 `double`，通常表示介电常数，即传播媒体的电学性质。
-
-  - 参考链接：[http://veins.car2x.org/documentation/modules/#tworay](http://veins.car2x.org/documentation/modules/#tworay)
-
-衰落模型测试：
-仿真场景中设置 1 辆车，最大速度为 30 m/s 时，考虑建筑物遮挡即 SimpleObstacleShadowing 时，使用 SimplePathlossModel 衰落因子值设置为 2.0 时，场景中接收消息情况是 101/200，值设置为 0 即无衰落时，场景中接收消息情况是 200/200；使用 NakagamiFading 时，场景中接收消息情况是 165/200；使用 TwoRayInterferenceModel 时，场景中接收消息情况是 116/200。
-
-#### 3.2.7. RSU通信范围显示
+#### 3.2.5. RSU通信范围显示
 在`xx.ini`文件中，有一个通信范围显示开关，
 ```ini
 *.connectionManager.drawMaxIntfDist = true
