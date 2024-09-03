@@ -69,7 +69,7 @@ Veins 使用 OMNeT++ 作为其网络模拟器。OMNeT++ 是一个可扩展的、
   <img src="./image/Veins/image45.png" alt="Alt text" style="width: 90%;">
 </div>
 
-接下来将平台示例代码载入到OMNeT++中，详见👉[OMNeT++导入项目教程](Tutorials/OMNeTpp_Project_Import_Guide.md)。
+接下来将平台示例代码载入到OMNeT++中，详见👉[OMNeT++导入项目教程](Tutorials/OMNeTpp_Project_Import_Guide.md)，示例工程路径`~/Home/src/veins`。
 
 
 
