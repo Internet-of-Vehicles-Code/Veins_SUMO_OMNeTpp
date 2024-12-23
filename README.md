@@ -2,28 +2,29 @@
   - [1.1. Veins](#11-veins)
   - [1.2. SUMO](#12-sumo)
   - [1.3. OMNeT++](#13-omnet)
-- [2. OMNeT++ 示例代码介绍](#2-omnet-示例代码介绍)
-- [3. 仿真地图替换](#3-仿真地图替换)
-    - [3.1. 使用netconvert转换工具](#31-使用netconvert转换工具)
-    - [3.2. 直接用netedit软件绘制地图](#32-直接用netedit软件绘制地图)
-- [4. 常用功能代码编写](#4-常用功能代码编写)
-  - [4.1. 发送与接收 WSM 消息](#41-发送与接收-wsm-消息)
-  - [4.2. 设置多个RSU](#42-设置多个rsu)
-  - [4.3. 获取节点位置和速度](#43-获取节点位置和速度)
-  - [4.4. 获取消息的接收功率](#44-获取消息的接收功率)
-  - [4.5. 新建一种ReportMessage消息类型](#45-新建一种reportmessage消息类型)
-  - [4.6. 修改信道衰落模型](#46-修改信道衰落模型)
-  - [4.7. RSU通信范围显示](#47-rsu通信范围显示)
-  - [4.8. OMNeT++中链接OpenSSL库](#48-omnet中链接openssl库)
-  - [4.9. 自消息 / 节点自主发消息实现](#49-自消息--节点自主发消息实现)
-  - [4.10. 控制车辆变更车道](#410-控制车辆变更车道)
-  - [4.11. 制动车辆/使车辆减速](#411-制动车辆使车辆减速)
-  - [4.12. 关于生成随机车辆轨迹](#412-关于生成随机车辆轨迹)
-- [5. 使用Pandas分析OMNeT++仿真结果](#5-使用pandas分析omnet仿真结果)
-  - [5.1 获取所有节点TotalLostPackets](#51-获取所有节点totallostpackets)
-- [6. 平台中可能遇到的问题](#6-平台中可能遇到的问题)
-  - [6.1. Ubuntu磁盘扩容](#61-ubuntu磁盘扩容)
-  - [6.2. 安装中文输入法](#62-安装中文输入法)
+- [2. 相关教程推荐](#2-相关教程推荐)
+- [3. OMNeT++ 示例代码介绍](#3-omnet-示例代码介绍)
+- [4. 仿真地图替换](#4-仿真地图替换)
+  - [4.1. 使用netconvert转换工具](#41-使用netconvert转换工具)
+  - [4.2. 直接用netedit软件绘制地图](#42-直接用netedit软件绘制地图)
+- [5. 常用功能代码编写](#5-常用功能代码编写)
+  - [5.1. 发送与接收 WSM 消息](#51-发送与接收-wsm-消息)
+  - [5.2. 设置多个RSU](#52-设置多个rsu)
+  - [5.3. 获取节点位置和速度](#53-获取节点位置和速度)
+  - [5.4. 获取消息的接收功率](#54-获取消息的接收功率)
+  - [5.5. 新建一种ReportMessage消息类型](#55-新建一种reportmessage消息类型)
+  - [5.6. 修改信道衰落模型](#56-修改信道衰落模型)
+  - [5.7. RSU通信范围显示](#57-rsu通信范围显示)
+  - [5.8. OMNeT++中链接OpenSSL库](#58-omnet中链接openssl库)
+  - [5.9. 自消息 / 节点自主发消息实现](#59-自消息--节点自主发消息实现)
+  - [5.10. 控制车辆变更车道](#510-控制车辆变更车道)
+  - [5.11. 制动车辆/使车辆减速](#511-制动车辆使车辆减速)
+  - [5.12. 关于生成随机车辆轨迹](#512-关于生成随机车辆轨迹)
+- [6. 使用Pandas分析OMNeT++仿真结果](#6-使用pandas分析omnet仿真结果)
+  - [6.1. 获取所有节点TotalLostPackets](#61-获取所有节点totallostpackets)
+- [7. 平台中可能遇到的问题](#7-平台中可能遇到的问题)
+  - [7.1. Ubuntu磁盘扩容](#71-ubuntu磁盘扩容)
+  - [7.2. 安装中文输入法](#72-安装中文输入法)
 
 
 ## 1. Veins & SUMO & OMNeT++ 车联网仿真平台简介
@@ -76,8 +77,15 @@ Veins 使用 OMNeT++ 作为其网络模拟器。OMNeT++ 是一个可扩展的、
 接下来将平台示例代码载入到OMNeT++中，详见👉[OMNeT++导入项目教程](Tutorials/OMNeTpp_Project_Import_Guide.md)，示例工程路径`~/Home/src/veins`。
 
 
+## 2. 相关教程推荐
+- 👉[Veins简易安装教程](https://github.com/Xiaokaaa/VeinsV2XHub/blob/master/Tutorials/Veins_Installation_Tutorial.md)，下载导入虚拟机即可，适合新手，满足绝大部分需求。
+- 👉[Ubuntu 下 Veins5.2 安装教程](https://github.com/Yrongovo/Veins5.2-Ubuntu18.04-Installation-Guide)，自定义版本安装。
+- 👉[Windows下Veins安装教程](https://blog.csdn.net/qq_51348866/article/details/144545287?spm=1001.2014.3001.5502)，基于Veins5.2推荐的OMNeT++、SUMO版本安装，还是推荐使用Linux下使用。
+- 👉[OMNeT++项目导入教程](https://github.com/Xiaokaaa/VeinsV2XHub/blob/master/Tutorials/OMNeTpp_Project_Import_Guide.md)
+- 👉[JOSM安装教程](https://github.com/ChenCily/-/blob/main/JOSM%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B.md)，高效真实地图编辑。
 
-## 2. OMNeT++ 示例代码介绍
+
+## 3. OMNeT++ 示例代码介绍
 
 该部分对 OMNeT++ 示例代码中各文件功能或定义进行了简单介绍。
 
@@ -460,7 +468,7 @@ packet TraCIDemo11pMessage extends BaseFrame1609_4 {
 
 
 
-## 3. 仿真地图替换
+## 4. 仿真地图替换
 在使用SUMO进行交通仿真时，经常需要根据研究需求更换不同的地图。下面介绍一下如何进行地图替换。首先，需要知道，SUMO仿真器跑起来需要有三个文件:
 
 - `***.net.xml`文件：描述路网结构；
@@ -469,7 +477,7 @@ packet TraCIDemo11pMessage extends BaseFrame1609_4 {
 
 SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命令转换第三方来源中的复杂路网。总体包括道路、交叉口的id和位置信息、车道信息（数量、长度、最大速度、形状、功能等）、优先权信息、交通信号信息、交叉口信息等。下面介绍了两种生成SUMO路网文件的方法。
 
-#### 3.1. 使用netconvert转换工具
+### 4.1. 使用netconvert转换工具
 
 通过在终端中输入 netconvert 命令，能够将多种第三方的路网文件（如.osm文件）转化为 SUMO 可读的文件，具体可转化的第三方来源有：OpenStreetMap、PTV Vissim、OpenDrive、MATsim、ArcView等。下面将以OpenStreetMap为例进行过程描述。
 
@@ -627,7 +635,7 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
     <img src="./image/Veins/image34.jpg" alt="Alt text" style="width: 100%;">
     </div>
 
-#### 3.2. 直接用netedit软件绘制地图
+### 4.2. 直接用netedit软件绘制地图
 
 - **路网编辑：**
   
@@ -661,8 +669,8 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
 
 
 
-## 4. 常用功能代码编写
-### 4.1. 发送与接收 WSM 消息
+## 5. 常用功能代码编写
+### 5.1. 发送与接收 WSM 消息
 - 发送 WSM 消息
   新建一条WSM消息并广播，代码如下：
 
@@ -721,7 +729,7 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
 
   ![](./image/Veins/image18.jpg)
 
-### 4.2. 设置多个RSU
+### 5.2. 设置多个RSU
   
   在设计我们的仿真场景时，我们可能会涉及到多个 RSU，需要在 `veins->examples->veins->RSUExampleScenario.ned` 文件中设置RSU 数量，并且在 `veins->examples->veins->omnetpp.ini` 文件中设置每个 RSU 相对于地图中的位置。例如在示例场景中简单设置 2 个 RSU，代码如下：
 
@@ -766,7 +774,7 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
 
   ![image19](image/Veins/image19.jpg)
 
-### 4.3. 获取节点位置和速度
+### 5.3. 获取节点位置和速度
 - 获取节点位置
   
    `veins->src->veins->modules->application->traci->TraCIDemo11p.cc` 或 `MyVeinsApp.cc` 中可以通过如下指令获取车辆位置。例如在 `TraCIDemo11p.cc` 中通过函数 `void TraCIDemo11p::handlePositionUpdate(cObject* obj)` 控制车辆在每次位置更新时输出位置，代码如下:
@@ -800,7 +808,7 @@ SUMO 中路网文件的编写可以手动编写，也可以用 `netconvert` 命�
   ![](./image/Veins/image21.png)
 
 
-### 4.4. 获取消息的接收功率
+### 5.4. 获取消息的接收功率
   
 在进行 Sybil 攻击检测仿真时，计算接收信号强度（RSSI）需要用到消息的接收功率，获取接收功率代码如下：
 
@@ -820,7 +828,7 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
 
 参考链接：[https://www.coder.work/article/6774522](https://www.coder.work/article/6774522)
 
-### 4.5. 新建一种ReportMessage消息类型
+### 5.5. 新建一种ReportMessage消息类型
 - 首先需自定义一个 ReportMessage，可以在 `veins/src/veins/modules/messages` 路径下新建一个 `ReportMessage.msg` 文件，代码内容如下：
   
   ```java
@@ -888,7 +896,7 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
   }
   ```
 
-### 4.6. 修改信道衰落模型
+### 5.6. 修改信道衰落模型
 进入 `veins->examples->veins->config.xml` 文件中，修改如下代码块：
 
   ![](./image/Veins/image41.png)
@@ -906,7 +914,7 @@ std::cout << "curRecvPower_dBm = " << curRecvPower_dBm << " dBm." << std::endl;
   ``` 
   其中，`DielectricConstant` 类型是 `double`，通常表示介电常数，即传播媒体的电学性质。
 
-### 4.7. RSU通信范围显示
+### 5.7. RSU通信范围显示
 在`xx.ini`文件中，有一个通信范围显示开关，
 ```ini
 *.connectionManager.drawMaxIntfDist = true
@@ -925,7 +933,7 @@ if (drawMIR && strcmp(nic->getParentModule()->getName(), "rsu") == 0) {
 ```
 
 
-### 4.8. OMNeT++中链接OpenSSL库
+### 5.8. OMNeT++中链接OpenSSL库
 
 OpenSSL 是一个开源的安全套接字层密码库，可以在许多操作系统，包括 Linux，Mac OS 和 Windows 等上使用，包含了丰富的应用于网络安全的工具。这些工具可以用于创建 SSL 证书，生成和管理 RSA 密钥对，加密和解密数据，计算哈希值，建立网络连接等等。它被广泛应用于网络安全和加密领域。若仿真时需要进行一些密码学相关操作，可以在 OMNeT++ 中链接 OpenSSL 库。
 
@@ -947,7 +955,7 @@ OpenSSL 是一个开源的安全套接字层密码库，可以在许多操作系
   - OpenSSL 中文文档：[https://www.open-ssl.cn/](https://www.open-ssl.cn/) 👍👍👍
 
 
-### 4.9. 自消息 / 节点自主发消息实现
+### 5.9. 自消息 / 节点自主发消息实现
 - 什么是自消息？
 
 在OMNeT++中，自消息是指一个模块向自身发送的消息。这种消息通常用于实现模块内部的事件调度和处理。通过发送自消息，模块可以在未来的某个时间点触发特定的操作或事件。在OMNeT++中，模块可以使用`scheduleAt()`函数来安排未来的自消息，并且可以使用`cancelEvent()`函数取消已安排的自消息。这种机制使得模块能够更灵活地管理自身的行为和事件处理。
@@ -1018,7 +1026,7 @@ void TraCIDemoRSU11p::finish()
   - [https://github.com/sommer/veins](https://github.com/sommer/veins)
 
 
-### 4.10. 控制车辆变更车道
+### 5.10. 控制车辆变更车道
 在`/veins/src/veins/modules/mobility/traci/TraCICommandInterface.h`的`Vehicle`类中添加`changeLane()`函数声明，如下
 ```cpp
 //TraCICommandInterface.h
@@ -1047,7 +1055,7 @@ mobility->getVehicleCommandInterface()->changeLane(1, 5);
   - 博客：[https://cloud.tencent.com/developer/ask/sof/697965](https://cloud.tencent.com/developer/ask/sof/697965)
 
 
-### 4.11. 制动车辆/使车辆减速
+### 5.11. 制动车辆/使车辆减速
 仿真中，可能会遇到某个事件发生，需要让车辆停下来。简言之就是让车辆速度变为0，操作如下：
 ```cpp
 mobility->getVehicleCommandInterface()->slowDown(2, 4); 
@@ -1055,7 +1063,7 @@ mobility->getVehicleCommandInterface()->slowDown(2, 4);
 其中，`slowDown(double speed, simtime_t time)`函数表示使当前车辆速度在`time`时间内速度减为`speed`。
 
 
-### 4.12. 关于生成随机车辆轨迹
+### 5.12. 关于生成随机车辆轨迹
 [[Veins_SUMO_OMNeTpp]](https://github.com/Internet-of-Vehicles-Code/Veins_SUMO_OMNeTpp)中提到，使用下面两行代码可生成随机车辆行为
 ````
 /home/veins/src/sumo-1.11.0/tools/randomTrips.py -n map.net.xml -e 100 -l
@@ -1078,9 +1086,9 @@ mobility->getVehicleCommandInterface()->slowDown(2, 4);
 要么让 SUMO 随机选择种子，要么手动指定不同的种子值，这样就能够保证每次模拟的结果都充满了新鲜感和不确定性，正如现实世界中的行程一般。
 
 
-## 5. 使用Pandas分析OMNeT++仿真结果
-### 5.1 获取所有节点TotalLostPackets
-以读取TotalLostPackets这个数据为例，Python代码如下
+## 6. 使用Pandas分析OMNeT++仿真结果
+### 6.1. 获取所有节点TotalLostPackets
+仿真结束后可以通过OMNeT++图形界面导出所有仿真数据到`result.csv`文件（一般在veins/examples/result/目录下，也可通过ini文件配置一个结果输出路径），以读取`result.csv`中TotalLostPackets这个数据为例，基于Python的pandas，代码如下
 ```py
 import pandas as pd
 
@@ -1095,17 +1103,17 @@ filtered_data = data[(data['module'].str.contains("RSUExampleScenario.node")) & 
 print(filtered_data[['module', 'value']])
 filtered_data[['module', 'value']].to_csv("output_TotalLostPackets.csv", index=False)  # 输出到 output_TotalLostPackets.csv 文件
 ```
+也可以类似筛选其它数据进行后续结果处理。
 
+## 7. 平台中可能遇到的问题
 
-## 6. 平台中可能遇到的问题
-
-### 6.1. Ubuntu磁盘扩容
+### 7.1. Ubuntu磁盘扩容
 
 - CSDN 博客 · Ubuntu磁盘扩容：[link](https://blog.csdn.net/qq_45853229/article/details/124595300?ydreferer=aHR0cHM6Ly9jbi5iaW5nLmNvbS8=)
 
 - CSDN 博客 · 设置root密码：[[link]](https://blog.csdn.net/stone_fall/article/details/108229115)
 
-### 6.2. 安装中文输入法
+### 7.2. 安装中文输入法
 
 - 知乎 · Debian10 更换软件源 & 配置中文环境 & 安装中文输入法：[[link]](https://zhuanlan.zhihu.com/p/106775707)
 - CSDN 博客 · Linux 下安装中文输入法：[[link]](https://blog.csdn.net/yanhanhui1/article/details/115128309)
