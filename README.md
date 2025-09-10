@@ -28,6 +28,7 @@
 - [7. 平台中可能遇到的问题](#7-平台中可能遇到的问题)
   - [7.1. Ubuntu磁盘扩容](#71-ubuntu磁盘扩容)
   - [7.2. 安装中文输入法](#72-安装中文输入法)
+  - [7.3. ERROR: Attempted to read past end of byte buffer](#73-error-attempted-to-read-past-end-of-byte-buffer)
 
 
 ## 1. Veins & SUMO & OMNeT++ 车联网仿真平台简介
@@ -1170,3 +1171,18 @@ filtered_data[['module', 'value']].to_csv("output_TotalLostPackets.csv", index=F
 - CSDN 博客 · Linux 下安装中文输入法：[[link]](https://blog.csdn.net/yanhanhui1/article/details/115128309)
 - CSDN 博客 · Ubuntu 20.04 安装搜狗输入法：[[link]](https://blog.csdn.net/code_change_era/article/details/113834432)
 
+
+### 7.3. ERROR: Attempted to read past end of byte buffer
+更换地图后，有时会出现如下错误：
+```
+Attempted to read past end of byte buffer -- in module (veins::TraCIScenarioManagerLaunchd) RSUExampleScenario.manager (id=6), at t=0s, event #1
+```
+
+解决方案：在配置文件（sumo.cfg）中添加以下代码后，问题得以解决。
+```xml
+<report>
+    <xml-validation value="never"/>
+</report>
+```
+
+参考链接：[Veins尝试读取缓冲区末尾之后的字节。](https://dev59.com/qb3pa4cB1Zd3GeqPo_nt)
